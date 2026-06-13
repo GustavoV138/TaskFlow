@@ -1,8 +1,7 @@
 package com.devstack.taskflow.controller;
 
-import com.devstack.taskflow.dto.UserRequestDto;
-import com.devstack.taskflow.dto.UserResponseDto;
-import com.devstack.taskflow.model.User;
+import com.devstack.taskflow.dto.userdto.UserRequestDto;
+import com.devstack.taskflow.dto.userdto.UserResponseDto;
 import com.devstack.taskflow.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

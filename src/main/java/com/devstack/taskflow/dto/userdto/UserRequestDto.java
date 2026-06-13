@@ -1,4 +1,4 @@
-package com.devstack.taskflow.dto;
+package com.devstack.taskflow.dto.userdto;
 
 public class UserRequestDto {
 

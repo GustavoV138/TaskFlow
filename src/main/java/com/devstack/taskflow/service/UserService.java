@@ -1,7 +1,7 @@
 package com.devstack.taskflow.service;
 
-import com.devstack.taskflow.dto.UserRequestDto;
-import com.devstack.taskflow.dto.UserResponseDto;
+import com.devstack.taskflow.dto.userdto.UserRequestDto;
+import com.devstack.taskflow.dto.userdto.UserResponseDto;
 import com.devstack.taskflow.exception.userexceptions.UserNotFoundException;
 import com.devstack.taskflow.exception.userexceptions.UserAlreadyExistsException;
 import com.devstack.taskflow.model.User;
@@ -32,7 +32,7 @@ public class UserService {
         List<UserResponseDto> userList = new ArrayList<>();
 
         userRepository.findAll().forEach(u -> {
-                    userList.add(new UserResponseDto(u.getName(), u.getEmail()));
+                    userList.add(entityToDto(u));
                 });
 
         return userList;

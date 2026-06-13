@@ -2,6 +2,8 @@ package com.devstack.taskflow.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -20,13 +22,23 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Project> projects;
+
+    public User() {}
+
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public User() {}
+    public User(String name, String email, String password, List<Project> projects) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.projects = projects;
+    }
 
     public Long getId() {
         return id;
@@ -54,5 +66,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }
