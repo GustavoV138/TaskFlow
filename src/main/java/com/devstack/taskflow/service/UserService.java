@@ -51,16 +51,12 @@ public class UserService {
 
     public void deleteUser(Long id) {
 
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("Nenhuma conta foi encontrada.", HttpStatus.NOT_FOUND)
-        );
+        User user = getValidUser(id);
         userRepository.delete(user);
     }
 
     public UserResponseDto updateUser(Long id, UserRequestDto dto){
-        User found = userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("Nenhuma conta foi encontrada.", HttpStatus.NOT_FOUND)
-        );
+        User found = getValidUser(id);
 
         found.setName(dto.getName());
         found.setEmail(dto.getEmail());
@@ -69,6 +65,12 @@ public class UserService {
         User updated = userRepository.save(found);
 
         return entityToDto(updated);
+    }
+
+    private User getValidUser(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("Nenhuma conta foi encontrada.", HttpStatus.NOT_FOUND)
+        );
     }
 
     private UserResponseDto entityToDto(User user) {
@@ -84,10 +86,7 @@ public class UserService {
         User user = new User();
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-
-        if(dto.getPassword() != null && dto.getPassword().isEmpty()) {
-            user.setPassword(dto.getPassword());
-        }
+        user.setPassword(dto.getPassword());
 
         return user;
     }

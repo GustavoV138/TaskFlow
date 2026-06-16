@@ -4,11 +4,16 @@ import com.devstack.taskflow.exception.projectexceptions.ProjectAlreadyExistsExc
 import com.devstack.taskflow.exception.projectexceptions.ProjectNotFoundException;
 import com.devstack.taskflow.exception.userexceptions.UserAlreadyExistsException;
 import com.devstack.taskflow.exception.userexceptions.UserNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalHandlerException {
@@ -39,5 +44,22 @@ public class GlobalHandlerException {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getHttpCode(), ex.getMessage());
         problemDetail.setTitle("Projeto não encontrado.");
         return ResponseEntity.status(ex.getHttpCode()).body(problemDetail);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ProblemDetail> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+
+        Map<String, String> errorsMap = new HashMap<>();
+
+        for (FieldError fieldError : fieldErrors) {
+            errorsMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+
+        ProblemDetail problemDetail = ProblemDetail.forStatus(ex.getStatusCode());
+        problemDetail.setTitle("Erro no preenchimento dos campos.");
+        problemDetail.setProperty("campos_inválidos", errorsMap);
+        return ResponseEntity.status(ex.getStatusCode()).body(problemDetail);
     }
 }

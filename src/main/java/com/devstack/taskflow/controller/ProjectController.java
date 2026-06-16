@@ -3,6 +3,7 @@ package com.devstack.taskflow.controller;
 import com.devstack.taskflow.dto.projectdto.ProjectRequestDto;
 import com.devstack.taskflow.dto.projectdto.ProjectResponseDto;
 import com.devstack.taskflow.service.ProjectService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectResponseDto> createProject(@RequestBody ProjectRequestDto dto) {
+    public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody ProjectRequestDto dto) {
         ProjectResponseDto project = projectService.createProject(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(project);

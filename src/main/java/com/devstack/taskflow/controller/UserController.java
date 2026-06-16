@@ -3,6 +3,7 @@ package com.devstack.taskflow.controller;
 import com.devstack.taskflow.dto.userdto.UserRequestDto;
 import com.devstack.taskflow.dto.userdto.UserResponseDto;
 import com.devstack.taskflow.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto dto) {
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto dto) {
         UserResponseDto newUser = userService.createUser(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto dto) {
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDto dto) {
         return ResponseEntity.ok().body(userService.updateUser(id, dto));
     }
 
