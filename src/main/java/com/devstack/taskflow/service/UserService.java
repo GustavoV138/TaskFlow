@@ -23,9 +23,7 @@ public class UserService {
 
     public UserResponseDto getUser(Long id){
 
-        return entityToDto(userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("Nenhuma conta foi encontrada.", HttpStatus.NOT_FOUND)
-        ));
+        return entityToDto(getValidUser(id));
     }
 
     public List<UserResponseDto> getAllUsers() {
